@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Button, TouchableOpacity, Text } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function Tabs({ navigation }) {
   return (
@@ -8,14 +9,22 @@ export default function Tabs({ navigation }) {
         style={styles.button}
         onPress={() => navigation.navigate("Privacy Policy")}
       >
-        <Text style={styles.text}>Privacy policy</Text>
+        <Text>
+          <Ionicons
+            name="information-circle-outline"
+            size={40}
+            color="#2fa192"
+          />
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => navigation.navigate("About Us")}
         style={styles.button}
       >
-        <Text style={styles.text}>About us</Text>
+        <Text>
+          <Ionicons name="shield-checkmark-outline" size={40} color="#2fa192" />
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -24,14 +33,13 @@ export default function Tabs({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
     width: "100%",
-    padding: 20,
+    padding: 10,
   },
   button: {
     padding: 10,
     borderRadius: 5,
-    width: "45%",
   },
   text: {
     zIndex: 1,

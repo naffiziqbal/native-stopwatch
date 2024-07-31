@@ -18,7 +18,7 @@ const Stopwatch = () => {
   }, [isRunning, startTime]);
 
   const formatTime = (time) => {
-    const milliseconds = Math.floor(time % 1000); // Show hundredths of a second
+    const milliseconds = Math.floor((time % 1000) / 10); // Show hundredths of a second
     const seconds = Math.floor((time / 1000) % 60);
     const minutes = Math.floor((time / (1000 * 60)) % 60);
     const hours = Math.floor(time / (1000 * 60 * 60));
@@ -87,17 +87,22 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 48,
     marginBottom: 20,
+    color: "white",
+    backgroundColor: "#2fa192",
+    padding: 15,
+    borderRadius: 10,
   },
   buttons: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    width: "60%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "70%",
   },
   button: {
-    padding: 10,
+    padding: 15,
     borderRadius: 5,
     alignItems: "center",
-    width: 100,
+    width: 140,
   },
   startButton: {
     backgroundColor: "green",
