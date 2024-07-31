@@ -1,46 +1,56 @@
-// Stopwatch.js
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const Stopwatch = () => {
-  const [time, setTime] = useState(0);
+  const [startTime, setStartTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
 
   useEffect(() => {
     if (isRunning) {
       const id = setInterval(() => {
-        setTime((prevTime) => prevTime + 10);
-      }, 10);
+        setElapsedTime(Date.now() - startTime);
+      }, 100); // 100 milliseconds interval
       setIntervalId(id);
       return () => clearInterval(id);
     }
-  }, [isRunning]);
+  }, [isRunning, startTime]);
 
   const formatTime = (time) => {
-    const milliseconds = Math.floor((time % 1000) / 10);
+    const milliseconds = Math.floor(time % 1000); // Show hundredths of a second
     const seconds = Math.floor((time / 1000) % 60);
     const minutes = Math.floor((time / (1000 * 60)) % 60);
-
-    return `${padZero(minutes)}:${padZero(seconds)}.${padZero(milliseconds)}`;
+    const hours = Math.floor(time / (1000 * 60 * 60));
+    return `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}.${padZero(
+      milliseconds
+    )}`;
   };
 
   const padZero = (num) => (num < 10 ? `0${num}` : num);
 
-  const startStopwatch = () => setIsRunning(true);
-  const stopStopwatch = () => {
-    clearInterval(intervalId);
-    setIsRunning(false);
+  const startStopwatch = () => {
+    const currentTime = Date.now();
+    setStartTime(currentTime - elapsedTime);
+    setIsRunning(true);
   };
-  const resetStopwatch = () => {
-    clearInterval(intervalId);
+
+  const stopStopwatch = () => {
     setIsRunning(false);
-    setTime(0);
+    clearInterval(intervalId);
+    const currentTime = Date.now();
+    setElapsedTime(currentTime - startTime);
+  };
+
+  const resetStopwatch = () => {
+    setIsRunning(false);
+    clearInterval(intervalId);
+    setElapsedTime(0);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.time}>{formatTime(time)}</Text>
+      <Text style={styles.time}>{formatTime(elapsedTime)}</Text>
       <View style={styles.buttons}>
         {!isRunning ? (
           <TouchableOpacity
